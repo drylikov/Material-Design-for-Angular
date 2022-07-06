@@ -1,0 +1,117 @@
+@import '../core/style/menu-common';
+@import '../core/style/list-common';
+@import '../core/style/variables';
+@import '../core/style/vendor-prefixes';
+@import '../../cdk/a11y/a11y';
+
+$mat-select-arrow-size: 5px !default;
+$mat-select-arrow-margin: 4px !default;
+$mat-select-panel-max-height: 256px !default;
+$mat-select-item-height: 3em !default;
+
+$mat-select-placeholder-arrow-space: 2 * ($mat-select-arrow-size + $mat-select-arrow-margin);
+
+.mat-select {
+  display: inline-block;
+  width: 100%;
+  outline: none;
+}
+
+.mat-select-trigger {
+  display: inline-table;
+  cursor: pointer;
+  position: relative;
+  box-sizing: border-box;
+
+  .mat-select-disabled & {
+    @include user-select(none);
+    cursor: default;
+  }
+}
+
+.mat-select-value {
+  display: table-cell;
+  max-width: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mat-select-value-text {
+  @include mat-truncate-line();
+}
+
+.mat-select-arrow-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+
+  // When used in a box or standard appearance form-field the arrow should be shifted up 50%.
+  .mat-form-field-appearance-fill &,
+  .mat-form-field-appearance-standard & {
+    transform: translateY(-50%);
+  }
+
+  // When used in a outline form-field the arrow should be shifted up 25%.
+  .mat-form-field-appearance-outline & {
+    transform: translateY(-25%);
+  }
+}
+
+.mat-select-arrow {
+  width: 0;
+  height: 0;
+  border-left: $mat-select-arrow-size solid transparent;
+  border-right: $mat-select-arrow-size solid transparent;
+  border-top: $mat-select-arrow-size solid;
+  margin: 0 $mat-select-arrow-margin;
+}
+
+.mat-select-panel {
+  @include mat-menu-base(8);
+  padding-top: 0;
+  padding-bottom: 0;
+  max-height: $mat-select-panel-max-height;
+  min-width: 100%; // prevents some animation twitching and test inconsistencies in IE11
+
+  @include cdk-high-contrast {
+    outline: solid 1px;
+  }
+}
+
+// Override optgroup and option to scale based on font-size of the trigger.
+.mat-select-panel {
+  .mat-optgroup-label,
+  .mat-option {
+    font-size: inherit;
+    line-height: $mat-select-item-height;
+    height: $mat-select-item-height;
+  }
+}
+
+.mat-form-field-type-mat-select {
+  &:not(.mat-form-field-disabled) .mat-form-field-flex {
+    cursor: pointer;
+  }
+
+  .mat-form-field-label {
+    width: calc(100% - #{$mat-select-placeholder-arrow-space});
+  }
+}
+
+.mat-select-placeholder {
+  // Delay the transition until the label has animated about a third of the way through, in
+  // order to prevent the placeholder from overlapping for a split second.
+  transition: color $swift-ease-out-duration $swift-ease-out-duration / 3
+      $swift-ease-out-timing-function;
+
+  .mat-form-field-hide-placeholder & {
+    color: transparent;
+
+    // Remove the transition to prevent the placeholder
+    // from overlapping when the label comes back down.
+    transition: none;
+    // Prevents the '...' from showing on the parent element.
+    display: block;
+  }
+}

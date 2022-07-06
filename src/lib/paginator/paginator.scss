@@ -1,0 +1,81 @@
+$mat-paginator-height: 56px;
+$mat-paginator-padding: 0 8px;
+
+$mat-paginator-page-size-margin-right: 8px;
+
+$mat-paginator-items-per-page-label-margin: 0 4px;
+$mat-paginator-selector-margin: 6px 4px 0 4px;
+$mat-paginator-selector-trigger-min-width: 56px;
+
+$mat-paginator-range-actions-min-height: 48px;
+
+$mat-paginator-range-label-margin: 0 32px 0 24px;
+
+$mat-paginator-button-margin: 8px;
+$mat-paginator-button-icon-height: 8px;
+$mat-paginator-button-icon-width: 8px;
+
+$mat-paginator-button-increment-icon-margin: 12px;
+$mat-paginator-button-decrement-icon-margin: 16px;
+
+$mat-paginator-button-first-last-icon-width: 14px;
+
+$mat-paginator-button-first-icon-margin: 3px;
+$mat-paginator-button-last-icon-margin: 15px;
+
+
+$mat-paginator-button-first-decrement-icon-margin: 21px;
+$mat-paginator-button-last-increment-icon-margin: 9px;
+
+
+.mat-paginator {
+  display: block;
+}
+
+.mat-paginator-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: $mat-paginator-height;
+  padding: $mat-paginator-padding;
+  flex-wrap: wrap-reverse;
+}
+
+.mat-paginator-page-size {
+  display: flex;
+  align-items: baseline;
+  margin-right: $mat-paginator-page-size-margin-right;
+
+  [dir='rtl'] & {
+    margin-right: 0;
+    margin-left: $mat-paginator-page-size-margin-right;
+  }
+}
+
+.mat-paginator-page-size-label {
+  margin: $mat-paginator-items-per-page-label-margin;
+}
+
+.mat-paginator-page-size-select {
+  margin: $mat-paginator-selector-margin;
+  width: $mat-paginator-selector-trigger-min-width;
+}
+
+.mat-paginator-range-label {
+  margin: $mat-paginator-range-label-margin;
+}
+
+.mat-paginator-range-actions {
+  display: flex;
+  align-items: center;
+  min-height: $mat-paginator-range-actions-min-height;
+}
+
+.mat-paginator-icon {
+  width: $mat-paginator-height / 2;
+  fill: currentColor;
+
+  [dir='rtl'] & {
+    transform: rotate(180deg);
+  }
+}

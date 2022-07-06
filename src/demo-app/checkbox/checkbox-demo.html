@@ -1,0 +1,58 @@
+<h1>mat-checkbox: Basic Example</h1>
+<form>
+<mat-checkbox [(ngModel)]="isChecked"
+             name="cb"
+             value="basic_checkbox"
+             [color]="checkboxColor()"
+             (change)="isIndeterminate = false"
+             [indeterminate]="isIndeterminate"
+             [disabled]="isDisabled"
+             [labelPosition]="labelPosition">
+  Do you want to <em>foobar</em> the <em>bazquux</em>?
+
+</mat-checkbox> - <strong>{{printResult()}}</strong>
+</form>
+<div class="demo-checkbox">
+<input id="indeterminate-toggle"
+       type="checkbox"
+       [(ngModel)]="isIndeterminate"
+       [disabled]="isDisabled">
+<label for="indeterminate-toggle">Toggle Indeterminate</label>
+<input id="disabled-toggle" type="checkbox" [(ngModel)]="isDisabled">
+<label for="disabled-toggle">Toggle Disabled</label>
+<input id="color-toggle" type="checkbox" [(ngModel)]="useAlternativeColor">
+<label for="color-toggle">Toggle Color</label>
+</div>
+<div>
+  <p>Label position:</p>
+  <div>
+    <input #after type="radio"
+                  value="after"
+                  id="align-after"
+                  name="labelPosition"
+                  (click)="labelPosition = after.value"
+                  checked>
+    <label for="align-after">After</label>
+  </div>
+  <div>
+    <input #before type="radio"
+                  value="before"
+                  id="align-before"
+                  name="labelPosition"
+                  (click)="labelPosition = before.value">
+    <label for="align-before">Before</label>
+  </div>
+</div>
+
+<h1>Pseudo checkboxes</h1>
+<mat-pseudo-checkbox></mat-pseudo-checkbox>
+<mat-pseudo-checkbox [disabled]="true"></mat-pseudo-checkbox>
+
+<mat-pseudo-checkbox state="checked"></mat-pseudo-checkbox>
+<mat-pseudo-checkbox state="checked" [disabled]="true"></mat-pseudo-checkbox>
+
+<mat-pseudo-checkbox state="indeterminate"></mat-pseudo-checkbox>
+<mat-pseudo-checkbox state="indeterminate" [disabled]="true"></mat-pseudo-checkbox>
+
+<h1>Nested Checklist</h1>
+<mat-checkbox-demo-nested-checklist></mat-checkbox-demo-nested-checklist>

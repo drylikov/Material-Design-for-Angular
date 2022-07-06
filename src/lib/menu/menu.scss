@@ -1,0 +1,86 @@
+// TODO(kara): update vars for desktop when MD team responds
+@import '../core/style/button-common';
+@import '../core/style/layout-common';
+@import '../core/style/menu-common';
+@import '../core/style/layout-common';
+@import '../../cdk/a11y/a11y';
+
+$mat-menu-vertical-padding: 8px !default;
+$mat-menu-border-radius: 2px !default;
+$mat-menu-submenu-indicator-size: 10px !default;
+
+.mat-menu-panel {
+  @include mat-menu-base(2);
+  max-height: calc(100vh - #{$mat-menu-item-height});
+  border-radius: $mat-menu-border-radius;
+  outline: 0;
+
+  @include cdk-high-contrast {
+    outline: solid 1px;
+  }
+}
+
+.mat-menu-content {
+  padding-top: $mat-menu-vertical-padding;
+  padding-bottom: $mat-menu-vertical-padding;
+}
+
+.mat-menu-item {
+  @include mat-button-reset();
+  @include mat-menu-item-base();
+  position: relative;
+}
+
+.mat-menu-item-submenu-trigger {
+  // Increase the side padding to prevent the indicator from overlapping the text.
+  padding-right: $mat-menu-side-padding * 2;
+
+  // Renders a triangle to indicate that the menu item will open a sub-menu.
+  &::after {
+    $size: $mat-menu-submenu-indicator-size / 2;
+
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: $size 0 $size $size;
+    border-color: transparent transparent transparent currentColor;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    right: $mat-menu-side-padding;
+    transform: translateY(-50%);
+  }
+
+  [dir='rtl'] & {
+    padding-right: $mat-menu-side-padding;
+    padding-left: $mat-menu-side-padding * 2;
+
+    &::after {
+      right: auto;
+      left: $mat-menu-side-padding;
+      transform: rotateY(180deg) translateY(-50%);
+    }
+  }
+
+  // Prevent the user from interacting while the panel is still animating.
+  // This avoids issues where the user could accidentally open a sub-menu,
+  // because of the `overlapTrigger` option.
+  .mat-menu-panel.ng-animating & {
+    pointer-events: none;
+  }
+}
+
+button.mat-menu-item {
+  width: 100%;
+}
+
+.mat-menu-ripple {
+  @include mat-fill;
+
+  // Prevent any pointer events on the ripple container for a menu item. The ripple container is
+  // not the trigger element for the ripples and can be therefore disabled like that. Disabling
+  // the pointer events ensures that there is no `click` event that can bubble up and cause
+  // the menu panel to close.
+  pointer-events: none;
+}

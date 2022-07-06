@@ -1,0 +1,160 @@
+@import '../core/style/variables';
+@import '../core/style/elevation';
+@import '../core/style/layout-common';
+@import '../core/style/vendor-prefixes';
+@import '../../cdk/a11y/a11y';
+
+$mat-drawer-content-z-index: 1;
+$mat-drawer-side-drawer-z-index: 2;
+$mat-drawer-backdrop-z-index: 3;
+$mat-drawer-over-drawer-z-index: 4;
+
+// stylelint-disable max-line-length
+// Mixin that creates a new stacking context.
+// see https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
+// stylelint-enable
+@mixin mat-drawer-stacking-context($z-index: 1) {
+  position: relative;
+
+  // Use a z-index to create a new stacking context. (We can't use transform because it breaks fixed
+  // positioning inside of the transformed element).
+  z-index: $z-index;
+}
+
+.mat-drawer-container {
+  // We need a stacking context here so that the backdrop and drawers are clipped to the
+  // MatDrawerContainer. This creates a new z-index stack so we use low numbered z-indices.
+  // We create another stacking context in the '.mat-drawer-content' and in each drawer so that
+  // the application content does not get messed up with our own CSS.
+  @include mat-drawer-stacking-context();
+
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+
+  // Need this to take up space in the layout.
+  display: block;
+
+  // Hide the drawers when they're closed.
+  overflow: hidden;
+
+  // TODO(hansl): Update this with a more robust solution.
+  &[fullscreen] {
+    @include mat-fill();
+
+    &.mat-drawer-opened {
+      overflow: hidden;
+    }
+  }
+
+  // When the consumer explicitly enabled the backdrop,
+  // we have to pull the side drawers above it.
+  &.mat-drawer-container-explicit-backdrop .mat-drawer-side {
+    z-index: $mat-drawer-backdrop-z-index;
+  }
+}
+
+.mat-drawer-backdrop {
+  @include mat-fill();
+
+  display: block;
+
+  // Because of the new stacking context, the z-index stack is new and we can use our own
+  // numbers.
+  z-index: $mat-drawer-backdrop-z-index;
+
+  // We use 'visibility: hidden | visible' because 'display: none' will not animate any
+  // transitions, while visibility will interpolate transitions properly.
+  // see https://developer.mozilla.org/en-US/docs/Web/CSS/visibility, the Interpolation
+  // section.
+  visibility: hidden;
+
+  &.mat-drawer-shown {
+    visibility: visible;
+  }
+
+  .mat-drawer-transition & {
+    transition: {
+      duration: $swift-ease-out-duration;
+      timing-function: $swift-ease-out-timing-function;
+      property: background-color, visibility;
+    }
+  }
+
+  @include cdk-high-contrast {
+    opacity: 0.5;
+  }
+}
+
+.mat-drawer-content {
+  @include mat-drawer-stacking-context($mat-drawer-content-z-index);
+
+  display: block;
+  height: 100%;
+  overflow: auto;
+
+  .mat-drawer-transition & {
+    transition: {
+      duration: $swift-ease-out-duration;
+      timing-function: $swift-ease-out-timing-function;
+      property: transform, margin-left, margin-right;
+    }
+  }
+}
+
+.mat-drawer {
+  $high-contrast-border: solid 1px currentColor;
+
+  @include mat-drawer-stacking-context($mat-drawer-over-drawer-z-index);
+
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  outline: 0;
+  box-sizing: border-box;
+  overflow-y: auto; // TODO(kara): revisit scrolling behavior for drawers
+  transform: translate3d(-100%, 0, 0);
+
+  &, [dir='rtl'] &.mat-drawer-end {
+    @include cdk-high-contrast {
+      border-right: $high-contrast-border;
+    }
+  }
+
+  [dir='rtl'] &, &.mat-drawer-end {
+    @include cdk-high-contrast {
+      border-left: $high-contrast-border;
+      border-right: none;
+    }
+  }
+
+  &.mat-drawer-side {
+    z-index: $mat-drawer-side-drawer-z-index;
+  }
+
+  &.mat-drawer-end {
+    right: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+
+  [dir='rtl'] & {
+    transform: translate3d(100%, 0, 0);
+
+    &.mat-drawer-end {
+      left: 0;
+      right: auto;
+      transform: translate3d(-100%, 0, 0);
+    }
+  }
+
+  &:not(.mat-drawer-side) {
+    // The elevation of z-16 is noted in the design specifications.
+    // See https://material.io/guidelines/patterns/navigation-drawer.html#
+    @include mat-elevation(16);
+  }
+}
+
+.mat-sidenav-fixed {
+  position: fixed;
+}

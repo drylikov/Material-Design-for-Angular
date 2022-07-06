@@ -1,0 +1,49 @@
+@import '../core/theming/palette';
+@import '../core/theming/theming';
+@import '../core/style/form-common';
+@import '../core/typography/typography-utils';
+@import '../core/style/vendor-prefixes';
+
+
+@mixin mat-input-theme($theme) {
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $foreground: map-get($theme, foreground);
+
+  .mat-input-element:disabled {
+    color: mat-color($foreground, disabled-text);
+  }
+
+  .mat-input-element {
+    caret-color: mat-color($primary);
+
+    @include input-placeholder {
+      color: _mat-control-placeholder-color($theme);
+    }
+  }
+
+  .mat-accent .mat-input-element {
+    caret-color: mat-color($accent);
+  }
+
+  .mat-warn .mat-input-element,
+  .mat-form-field-invalid .mat-input-element {
+    caret-color: mat-color($warn);
+  }
+}
+
+@mixin mat-input-typography($config) {
+  // The unit-less line-height from the font config.
+  $line-height: mat-line-height($config, input);
+
+  // The amount of space between the top of the line and the top of the actual text
+  // (as a fraction of the font-size).
+  $line-spacing: ($line-height - 1) / 2;
+
+  // <input> elements seem to have their height set slightly too large on Safari causing the text to
+  // be misaligned w.r.t. the placeholder. Adding this margin corrects it.
+  input.mat-input-element {
+    margin-top: -$line-spacing * 1em;
+  }
+}

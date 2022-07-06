@@ -1,0 +1,28 @@
+{
+  "functions": {
+    "source": "tools/screenshot-test/functions"
+  },
+  "hosting": {
+    "public": "dist/packages/demo-app",
+    "rewrites": [
+      {
+        "source": "/**/!(*.@(js|ts|html|css|json|svg|png|jpg|jpeg))",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "*",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      }
+    ],
+    "ignore": [
+      "firebase.json"
+    ]
+  }
+}
